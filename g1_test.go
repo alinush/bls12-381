@@ -393,9 +393,12 @@ func BenchmarkG1Add(t *testing.B) {
 
 func BenchmarkG1Mul(t *testing.B) {
 	g1 := NewG1()
-	a, e, c := g1.rand(), q, PointG1{}
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
+		t.StopTimer()
+		z, _ := rand.Int(rand.Reader, q)
+		a, e, c := g1.rand(), z, PointG1{}
+		t.StartTimer()
 		g1.MulScalar(&c, a, e)
 	}
 }
